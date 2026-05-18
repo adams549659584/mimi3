@@ -1,0 +1,23 @@
+[project]
+name = "mimo2api"
+version = "0.1.0"
+description = "小米 AI Studio (MIMO) 模型的 OpenAI/Anthropic 兼容 API 网关"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.100.0",
+    "uvicorn>=0.23.0",
+    "httpx>=0.24.0",
+    "websockets>=11.0",
+    "pydantic>=2.0.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.scripts]
+mimo2api = "main:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["mimo2api"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

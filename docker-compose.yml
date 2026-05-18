@@ -1,0 +1,23 @@
+networks:
+  default:
+    external: true
+    name: MyNetwork
+    
+services:
+  mimo2api:
+    image: mimo2api:latest
+    container_name: mimo2api
+    restart: unless-stopped
+    ports:
+      - "${SERVER_PORT:-8000}:${SERVER_PORT:-8000}"
+      - "4040:4040"
+    volumes:
+      - ./users:/app/users:ro
+      - ./logs:/app/logs
+    env_file:
+      - .env
+    entrypoint: ["python", "start.py"]
+
+# docker build -t mimo2api .
+# docker tag mimo2api:latest 172.21.3.11:20005/mimo2api:latest
+# docker push 172.21.3.11:20005/mimo2api:latest

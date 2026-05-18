@@ -21,3 +21,10 @@ archive/http_captures/
 .ai_memory/
 .vscodestatus_page/
 status_page/
+
+# 运行时数据
+gateway_metrics.db
+gateway_snapshot.json
+
+# Docker
+docker-compose.override.yml

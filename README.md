@@ -22,11 +22,69 @@ cp env.example .env
 python main.py
 ```
 
-## 前置条件
-一台拥有公网 ip 的机器，或者本机进行内网穿透。此为必备配置选项
+## ngrok 内网穿透配置
+
+本项目需要一个公网可达的 WebSocket 地址。推荐使用 [ngrok](https://ngrok.com) 进行内网穿透。
+
+### 方式一：自动启动（推荐）
+
 ```bash
-WS_TUNNEL_URL=ws://your-domain.com:8000/ws
+# 安装 ngrok（Windows）
+scoop install ngrok
+
+# 添加 authtoken（仅需执行一次）
+ngrok config add-authtoken <YOUR_AUTHTOKEN>
+
+# 自动启动（会自动启动 ngrok、检测隧道地址、启动服务）
+python start.py
 ```
+
+脚本会自动：
+1. 启动 ngrok（如果尚未运行）
+2. 查询本地 API 获取公网地址
+3. 设置 `WS_TUNNEL_URL` 环境变量
+4. 启动 mimo2api 网关服务
+
+### 方式二：手动配置
+
+```bash
+# 终端 1：启动 ngrok
+ngrok http 8000
+
+# 终端 2：复制并编辑环境变量
+cp env.example .env
+# 在 .env 中配置 ngrok 提供的公网地址：
+# WS_TUNNEL_URL=wss://your-random-id.ngrok-free.app/ws
+
+python main.py
+```
+
+### 方式三：Docker Compose
+
+```bash
+# 在 .env 中配置 NGROK_AUTHTOKEN
+cp env.example .env
+
+# 构建并启动
+docker compose up --build
+
+# 后台运行
+docker compose up -d --build
+
+# 查看日志
+docker compose logs -f
+
+# 停止
+docker compose down
+```
+
+容器内自动启动 ngrok 并检测隧道地址，无需手动配置 `WS_TUNNEL_URL`。ngrok Web UI 可通过 `http://localhost:4040` 访问。
+
+## 前置条件
+
+- Python 3.10+
+- 公网可达的 WebSocket 地址（通过 ngrok 或直接公网 IP）
+- ngrok authtoken（从 https://dashboard.ngrok.com 获取）
 
 ## 免责声明
 

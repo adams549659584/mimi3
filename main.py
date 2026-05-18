@@ -23,8 +23,7 @@ os.environ["MIMO2API_WS_URL"] = WS_TUNNEL_URL
 # 引入实际带 Lifespan 背景挂载服务的 FastAPI APP 对象
 from mimo2api.web_service import app
 
-if __name__ == "__main__":
-    import os
+def main():
     from logging.handlers import RotatingFileHandler
 
     log_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "logs")
@@ -49,3 +48,6 @@ if __name__ == "__main__":
     logging.info(f"🚀 mimo2api 统一主入口 - 正在启动网关并绑定集群到 {SERVER_HOST}:{SERVER_PORT}")
     logging.info(f"🔗 云端要求 Claw 主动连接的桥接 WS URL 将统一下发为: {WS_TUNNEL_URL}")
     uvicorn.run(app, host=SERVER_HOST, port=SERVER_PORT, ws_max_size=10**8)
+
+if __name__ == "__main__":
+    main()
